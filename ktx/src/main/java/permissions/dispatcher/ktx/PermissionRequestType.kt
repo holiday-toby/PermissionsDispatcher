@@ -71,14 +71,10 @@ internal sealed class PermissionRequestType {
                                    requiresPermission: Func,
                                    onNeverAskAgain: Func?,
                                    onPermissionDenied: Func?) {
-        var fragment = target.supportFragmentManager
-            .findFragmentByTag(PermissionsRequestFragment.tag) as? PermissionsRequestFragment
-        if (fragment == null) {
-            fragment = PermissionsRequestFragment.newInstance()
-            target.supportFragmentManager.beginTransaction()
-                .add(fragment, PermissionsRequestFragment.tag)
-                .commitNowAllowingStateLoss()
-        }
+        val fragment = PermissionsRequestFragment.newInstance()
+        target.supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, fragment)
+            .commitNowAllowingStateLoss()
         invokeRequest(
             fragment = fragment,
             permissions = permissions,

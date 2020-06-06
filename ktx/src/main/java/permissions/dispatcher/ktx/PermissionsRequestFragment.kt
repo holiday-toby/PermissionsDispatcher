@@ -1,9 +1,6 @@
 package permissions.dispatcher.ktx
 
-import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
@@ -19,19 +16,8 @@ internal class PermissionsRequestFragment : Fragment() {
     private var onNeverAskAgain: Func? = null
     private var onPermissionDenied: Func? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        retainInstance = true
-        activity?.requestedOrientation =
-            if (context.resources.configuration.orientation == ORIENTATION_PORTRAIT)
-                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            else
-                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         requiresPermission = null
         onNeverAskAgain = null
         onPermissionDenied = null
@@ -96,7 +82,6 @@ internal class PermissionsRequestFragment : Fragment() {
         fragmentManager?.beginTransaction()?.remove(this)?.commitNowAllowingStateLoss()
 
     companion object {
-        val tag = PermissionsRequestFragment::class.java.canonicalName
         fun newInstance() = PermissionsRequestFragment()
     }
 }
